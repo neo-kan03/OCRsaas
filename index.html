@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Facturas SaaS - La solución definitiva para la extracción automática de datos de facturas y contratos mediante OCR inteligente.">
+  <meta name="keywords" content="OCR, SaaS, facturas, extracción de datos, automatización, gestión documental">
+  <meta property="og:title" content="Facturas SaaS - Extracción Inteligente de Datos">
+  <meta property="og:description" content="Sube tus documentos y deja que nuestra IA extraiga la información por ti. Pruébalo gratis con hasta 10 usos diarios.">
+  <meta property="og:image" content="assets/hero.png">
+  <title>Facturas SaaS - Extracción Inteligente de Datos</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/loading.css">
+  <link rel="stylesheet" href="css/headerComponents.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- Librerías OCR y Archivos -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";</script>
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+  <script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <!-- Objetos de Domino -->
+  <script type="text/babel" src="objects/subscription.js"></script>
+  <script type="text/babel" src="objects/user.js"></script>
+
+  <!-- Modelo -->
+  <script type="text/babel" src="config/firebase.js"></script>
+  <script type="text/babel" src="config/firebaseError.js"></script>
+  <script type="text/babel" src="config/planconfig.js"></script>
+
+  <!-- Servicios (Base de datos) -->
+  <script src="services/translations.js"></script>
+  <script type="text/babel" src="services/subscriptionService.js"></script>
+  <script type="text/babel" src="services/invoiceProcessor.js"></script>
+  <script type="text/babel" src="services/userService.js"></script>
+
+  <!-- Controlador -->
+  <script type="text/babel" src="controller/authController.js"></script>
+  <script type="text/babel" src="controller/subscriptionController.js"></script>
+
+  <!-- Componentes -->
+  <script type="text/babel" src="frontend/loginView.js"></script>
+  <script type="text/babel" src="frontend/registerView.js"></script>
+  <script type="text/babel" src="frontend/ocrDashboardView.js"></script>
+  <script type="text/babel" src="frontend/homeView.js"></script>
+  <script type="text/babel" src="frontend/headerComponents.js"></script>
+  <script type="text/babel" src="frontend/loadingView.js"></script>
+
+  <!-- Componente principal -->
+  <script type="text/babel" src="app.js"></script>
+</body>
+
+</html>

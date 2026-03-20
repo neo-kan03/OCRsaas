@@ -1,0 +1,138 @@
+.header-v2-nav {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #F1F5F9;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 0.75rem 0;
+}
+
+.header-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 800;
+    font-size: 1.25rem;
+}
+
+.header-logo .logo-icon {
+    font-size: 1.5rem;
+    color: #0052FF;
+}
+
+.header-logo .logo-text span {
+    color: #0052FF;
+}
+
+.header-nav {
+    display: flex;
+    gap: 2rem;
+}
+
+.header-nav a {
+    text-decoration: none;
+    color: #64748B;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+.header-nav a:hover {
+    color: #0052FF;
+}
+
+.header-auth {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.lang-selector-v2 {
+    background: transparent;
+    border: none;
+    padding: 4px 4px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #64748B;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s;
+    appearance: none; /* Removes browser default arrows if we want, but let's keep them if it looks okay */
+}
+
+.lang-selector-v2:hover {
+    color: #0052FF;
+}
+
+.btn-login-v2 {
+    color: #475569;
+    font-weight: 600;
+    font-size: 0.95rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.btn-login-v2:hover {
+    background: #F1F5F9;
+    color: #0052FF;
+}
+
+.btn-signup-v2 {
+    background: #0052FF;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: none;
+    cursor: pointer;
+}
+
+.user-name-v2 {
+    color: #1E293B;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 32px; /* Fixed height for consistent vertical centering */
+}
+
+.user-name-v2 i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-name-v2 i svg {
+    width: 18px;
+    height: 18px;
+    color: #64748B;
+}
+
+.btn-logout-v2 {
+    color: #EF4444;
+    font-size: 0.9rem;
+    font-weight: 600;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .header-nav { display: none; }
+}
