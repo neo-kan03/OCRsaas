@@ -3,8 +3,33 @@ function App() {
   const [authView, setAuthView] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
   const [view, setView] = React.useState(() => {
-    return localStorage.getItem("current_view") || "home";
+    const params = new URLSearchParams(window.location.search);
+    return params.get('view') || localStorage.getItem("current_view") || "home";
   });
+
+  const navigate = React.useCallback((newView) => {
+    setView(newView);
+    window.history.pushState({ view: newView }, '', `?view=${newView}`);
+  }, []);
+
+  React.useEffect(() => {
+    const handlePopState = (event) => {
+      if (event.state && event.state.view) {
+        setView(event.state.view);
+      } else {
+        const params = new URLSearchParams(window.location.search);
+        setView(params.get('view') || localStorage.getItem("current_view") || 'home');
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+
+    // Add initial state to history stack if empty
+    if (!window.history.state) {
+      window.history.replaceState({ view }, '', `?view=${view}`);
+    }
+
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
   const [lang, setLang] = React.useState(window.i18n.lang);
 
   React.useEffect(() => {
@@ -113,13 +138,13 @@ function App() {
         />
         <div style={{ flex: 1, overflow: 'auto' }}>
             {view === "ocr" ? (
-                <OCRDashboardView user={user} onBack={() => setView("home")} />
+                <OCRDashboardView user={user} onBack={() => navigate("home")} />
             ) : (
                 <HomeView 
                     user={user} 
                     onLogout={(user && user.isGuest) ? null : AuthController.logout} 
                     onLogin={() => setAuthView("login")}
-                    onOpenOCR={() => setView("ocr")} 
+                    onOpenOCR={() => navigate("ocr")} 
                 />
             )}
         </div>

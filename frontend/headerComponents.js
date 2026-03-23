@@ -12,23 +12,22 @@ function Header({ user, onLogin, onLogout }) {
     };
 
     return (
-        <header className="header-v2-nav">
-            <div className="header-container">
-                <div className="header-logo" onClick={() => window.location.reload()} style={{ cursor: 'pointer' }}>
-                    <span className="logo-icon"><i data-lucide="scan-text"></i></span>
-                    <span className="logo-text">EXTRAEXTRACT<span>.AI</span></span>
+        <header className="aeon-header">
+            <div className="aeon-header-container">
+                <div className="aeon-header-logo" onClick={() => window.location.reload()}>
+                    <div className="aeon-logo-icon">F</div>
+                    <span className="aeon-logo-text">Facturas SaaS</span>
                 </div>
-                
-                <nav className="header-nav">
-                    <a href="#funcionamiento">{window.t('nav_how_it_works')}</a>
-                    <a href="#tecnologia">{window.t('nav_tech')}</a>
-                    <a href="#precios">{window.t('nav_pricing')}</a>
+
+                <nav className="aeon-header-nav">
+                    <a href="#features">{window.t('nav_features')}</a>
+                    <a href="#use-cases">{window.t('nav_use_cases')}</a>
                 </nav>
 
-                <div className="header-auth">
-                    <select 
-                        className="lang-selector-v2" 
-                        value={window.i18n.lang} 
+                <div className="aeon-header-actions">
+                    <select
+                        className="aeon-lang-selector"
+                        value={window.i18n.lang}
                         onChange={handleLanguageChange}
                         title={window.t('header_title_language')}
                     >
@@ -38,14 +37,17 @@ function Header({ user, onLogin, onLogout }) {
 
                     {user.isGuest ? (
                         <React.Fragment>
-                            <button onClick={onLogin} className="btn-login-v2">{window.t('btn_login')}</button>
-                            <button onClick={onLogin} className="btn-signup-v2">{window.t('btn_free_trial')}</button>
+                            <button onClick={onLogin} className="aeon-btn-login">{window.t('btn_login')}</button>
+                            <button onClick={onLogin} className="aeon-btn-signup">{window.t('btn_free_trial')}</button>
                         </React.Fragment>
                     ) : (
-                        <React.Fragment>
-                            <span className="user-name-v2"><i data-lucide="circle-user"></i>{window.t('user_welcome', { name: user.name })}</span>
-                            <button onClick={onLogout} className="btn-logout-v2">{window.t('btn_logout')}</button>
-                        </React.Fragment>
+                        <div className="aeon-user-profile">
+                            <span className="aeon-user-name">
+                                <i data-lucide="circle-user"></i>
+                                {window.t('user_welcome', { name: user.name })}
+                            </span>
+                            <button onClick={onLogout} className="aeon-btn-logout">{window.t('btn_logout')}</button>
+                        </div>
                     )}
                 </div>
             </div>
