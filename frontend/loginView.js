@@ -49,7 +49,7 @@ function LoginView({ onLogin, onLoginWithGoogle, onSwitch, onBack }) {
                 <form onSubmit={handleSubmit}>
                     <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
                     <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
-                    <button type="submit">{window.t('login_btn_enter')}</button>
+                    <button type="submit" className="aeon-btn-primary" style={{ width: '100%' }}>{window.t('login_btn_enter')}</button>
                 </form>
                 <div style={{ margin: '20px 0', textAlign: 'center', color: '#666' }}></div>
                 <button onClick={handleGoogleLogin} className="divIniciarSesion">
@@ -58,7 +58,7 @@ function LoginView({ onLogin, onLoginWithGoogle, onSwitch, onBack }) {
                 </button>
                 <p>{window.t('login_footer_no_account')} <button onClick={onSwitch}>{window.t('login_btn_switch_register')}</button></p>
                 <div style={{ marginTop: '1rem', borderTop: '1px solid #eee', paddingTop: '1rem' }}>
-                    <button onClick={onBack} className="btn-secondary" style={{ width: '100%' }}>← {window.t('login_btn_back')}</button>
+                    <button onClick={onBack} className="aeon-btn-secondary" style={{ width: '100%' }}>← {window.t('login_btn_back')}</button>
                 </div>
             </div>
         </div>

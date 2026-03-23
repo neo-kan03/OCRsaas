@@ -5,6 +5,8 @@
             "nav_how_it_works": "Cómo Funciona",
             "nav_tech": "Tecnología",
             "nav_pricing": "Precios",
+            "nav_features": "Funciones",
+            "nav_use_cases": "Casos de Uso",
             "home_title": "ExtraExtract.AI - Extracción Inteligente de Datos",
             "btn_login": "Iniciar Sesión",
             "btn_free_trial": "Prueba Gratis",
@@ -156,13 +158,92 @@
             "ocr_msg_preset_loaded": "Configuración \"{name}\" lista",
             "error_invalid_credentials": "Credenciales de inicio de sesión inválidas",
             "error_method_disabled": "El método de inicio de sesión no está habilitado",
-            "error_login_cancelled": "Se ha cancelado el inicio de sesión"
+            "error_login_cancelled": "Se ha cancelado el inicio de sesión",
+            "home": {
+                "hero": {
+                    "tag": "Innovación en Documentación",
+                    "title": "Extrae datos de facturas <span class=\"accent\">automáticamente</span> en segundos.",
+                    "subtitle": "Deja de perder horas en el procesamiento manual de facturas. Automatiza todo en segundos.",
+                    "cta_primary": "Pruébalo gratis",
+                    "cta_secondary": "Ver cómo funciona",
+                    "disclaimer": "Sin tarjeta de crédito. Configuración en 2 minutos."
+                },
+                "trust": {
+                    "title": "Diseñado para empresas que manejan datos financieros sensibles",
+                    "item1": "Procesamiento Seguro",
+                    "item2": "Cumplimiento GDPR",
+                    "item3": "Cero Almacenamiento de Datos",
+                    "quote": "Ahorramos horas cada semana procesando facturas.",
+                    "quote_author": "Cliente Enterprise"
+                },
+                "how_it_works": {
+                    "title": "Tres pasos hacia la automatización",
+                    "subtitle": "Del papel caótico a datos limpios en segundos.",
+                    "step1_title": "1. Sube tu factura",
+                    "step1_desc": "Arrastra y suelta tu PDF o imagen. Soporte para cientos de formatos globales.",
+                    "step2_title": "2. Extracción automática",
+                    "step2_desc": "Nuestra IA extrae los datos clave automáticamente con algoritmos avanzados.",
+                    "step3_title": "3. Datos listos para usar",
+                    "step3_desc": "Obtén datos estructurados listos para sincronizar con tu software contable."
+                },
+                "visual_mapping": {
+                    "input": "Entrada",
+                    "output": "Salida",
+                    "tag_company": "EMPRESA",
+                    "tag_total": "IMPORTE TOTAL",
+                    "drag_fields": "Arrastra para seleccionar campos",
+                    "title": "Extrae visualmente cualquier dato que necesites",
+                    "subtitle": "Ve más allá del OCR básico. Define exactamente qué extraer con una interfaz simple.",
+                    "desc": "Haz clic directamente en tu documento para decirle a la IA qué extraer. Sin código.",
+                    "f1": "Selección Drag&Drop",
+                    "f2": "Cualquier formato",
+                    "f3": "Sin configuración técnica",
+                    "f4": "Plantillas reutilizables",
+                    "cta": "Explorar más características"
+                },
+                "features": {
+                    "title1": "Entiende facturas reales automáticamente",
+                    "desc1": "Identificamos proveedores, líneas, impuestos e IBANs automáticamente.",
+                    "tag1": "Mapeo Automático",
+                    "tag2": "99.9% de Precisión",
+                    "title2": "Resultados al Instante",
+                    "desc2": "Datos listos para usar en milisegundos. Perfecto para altos volúmenes.",
+                    "title3": "Sincronización de Flujo",
+                    "desc3": "Conecta directamente con tu pila contable. Sin entrada manual.",
+                    "title4": "Salida JSON Estructurada",
+                    "desc4": "IBAN, fechas, líneas... todo en formato listo para tu base de datos."
+                },
+                "use_cases": {
+                    "title": "Diseñado para cada flujo financiero",
+                    "c1_title": "Contadores",
+                    "c1_desc": "Procesa miles de documentos directamente a tu libro mayor.",
+                    "c2_title": "Pequeñas Empresas",
+                    "c2_desc": "Mantén tus gastos categorizados y listos para auditoría.",
+                    "c3_title": "Ecommerce",
+                    "c3_desc": "Ingiere facturas de stock y sincroniza costos en tiempo real."
+                },
+                "api": {
+                    "title": "API robusta para integración perfecta",
+                    "desc": "Interfaz potente para desarrolladores. Envía una factura, recibe JSON.",
+                    "item1": "Endpoint POST seguro para subidas",
+                    "item2": "Respuesta JSON estructurada nativa"
+                },
+                "final_cta": {
+                    "title": "Empieza a automatizar tus facturas hoy",
+                    "subtitle": "Únete a miles de empresas que están reduciendo su carga administrativa.",
+                    "btn_primary": "Pruébalo gratis",
+                    "btn_secondary": "Contactar Ventas",
+                    "footer": "SIN TARJETA DE CRÉDITO. Configuración en 2 mins."
+                }
+            }
         },
         en: {
             "header_title_language": "Change Language",
             "nav_how_it_works": "How it Works",
             "nav_tech": "Technology",
             "nav_pricing": "Pricing",
+            "nav_features": "Features",
+            "nav_use_cases": "Use Cases",
             "home_title": "ExtraExtract.AI - Intelligent Data Extraction",
             "btn_login": "Login",
             "btn_free_trial": "Free Trial",
@@ -314,7 +395,84 @@
             "ocr_msg_preset_loaded": "Configuration \"{name}\" ready",
             "error_invalid_credentials": "Invalid login credentials",
             "error_method_disabled": "The login method is not enabled",
-            "error_login_cancelled": "Login has been cancelled"
+            "error_login_cancelled": "Login has been cancelled",
+            "home": {
+                "hero": {
+                    "tag": "Documentation Innovation",
+                    "title": "Extract invoice data <span class=\"accent\">automatically</span> in seconds.",
+                    "subtitle": "Stop wasting hours on manual invoice processing. Automate everything in seconds.",
+                    "cta_primary": "Try it Free",
+                    "cta_secondary": "See how it works",
+                    "disclaimer": "No credit card required. Setup in 2 minutes."
+                },
+                "trust": {
+                    "title": "Built for businesses handling sensitive financial data",
+                    "item1": "Secure Processing",
+                    "item2": "GDPR Compliant",
+                    "item3": "Zero Data Storage",
+                    "quote": "We save hours every week processing invoices.",
+                    "quote_author": "Enterprise Customer"
+                },
+                "how_it_works": {
+                    "title": "Three steps to automation",
+                    "subtitle": "From chaotic paper to clean data in seconds.",
+                    "step1_title": "1. Upload your invoice",
+                    "step1_desc": "Simply drag and drop your PDF or image. Support for hundreds of global formats.",
+                    "step2_title": "2. Automatic extraction",
+                    "step2_desc": "Our AI extracts key data automatically using advanced algorithms.",
+                    "step3_title": "3. Ready-to-use data",
+                    "step3_desc": "Get clean, structured data instantly. Ready to sync with your accounting software."
+                },
+                "visual_mapping": {
+                    "input": "Input",
+                    "output": "Output",
+                    "tag_company": "COMPANY",
+                    "tag_total": "TOTAL AMOUNT",
+                    "drag_fields": "Drag to select fields",
+                    "title": "Visually extract any data you need",
+                    "subtitle": "Go beyond basic OCR. Define exactly what to extract with a simple interface.",
+                    "desc": "Click directly on your document to tell the AI what to extract. No coding required.",
+                    "f1": "Drag&Drop Selection",
+                    "f2": "Any invoice format",
+                    "f3": "No technical setup",
+                    "f4": "Reusable templates",
+                    "cta": "Explore more features"
+                },
+                "features": {
+                    "title1": "Understands real-world invoices automatically",
+                    "desc1": "We automatically identify vendors, line items, tax rates, and IBANs.",
+                    "tag1": "Automatic Field Mapping",
+                    "tag2": "99.9% Extraction Accuracy",
+                    "title2": "Instant Results",
+                    "desc2": "Data returns instantly, ready for use. Perfect for high-volume automation.",
+                    "title3": "Workflow Sync",
+                    "desc3": "Connect directly to your accounting stack. No more manual data entry.",
+                    "title4": "Structured JSON Output",
+                    "desc4": "IBAN, dates, lines... everything in a format ready for your database."
+                },
+                "use_cases": {
+                    "title": "Built for every financial workflow",
+                    "c1_title": "Accountants",
+                    "c1_desc": "Batch process thousands of documents directly to your general ledger.",
+                    "c2_title": "Small Businesses",
+                    "c2_desc": "Keep your expenses categorized and audit-ready effortlessly.",
+                    "c3_title": "Ecommerce",
+                    "c3_desc": "Automatically ingest stock invoices and sync costs in real-time."
+                },
+                "api": {
+                    "title": "Robust API for seamless integration",
+                    "desc": "Powerful interface designed for developers. Send an invoice, get JSON.",
+                    "item1": "Secure POST endpoint for direct uploads",
+                    "item2": "Structured JSON response by default"
+                },
+                "final_cta": {
+                    "title": "Start automating your invoices today",
+                    "subtitle": "Join thousands of companies reducing their administrative overhead.",
+                    "btn_primary": "Try it Free",
+                    "btn_secondary": "Contact Sales",
+                    "footer": "NO CREDIT CARD REQUIRED. Setup in 2 mins."
+                }
+            }
         }
     };
 
@@ -329,10 +487,21 @@
             window.dispatchEvent(new CustomEvent('languageChange', { detail: val }));
         },
         t(key, params = {}) {
-            let text = (translations[currentLang] && translations[currentLang][key]) || 
-                       (translations['es'][key]) || 
-                       key;
-            
+            // Support dot-notation for nested keys like 'home.hero.title'
+            function resolve(obj, k) {
+                const parts = k.split('.');
+                let cur = obj;
+                for (const p of parts) {
+                    if (cur == null || typeof cur !== 'object') return undefined;
+                    cur = cur[p];
+                }
+                return (typeof cur === 'string') ? cur : undefined;
+            }
+
+            let text = resolve(translations[currentLang], key)
+                    || resolve(translations['es'], key)
+                    || key;
+
             // Basic parameter replacement: {name} -> params.name
             Object.keys(params).forEach(p => {
                 text = text.replace(`{${p}}`, params[p]);
@@ -342,6 +511,6 @@
         }
     };
 
-    // Global helper
+    // Global helperº
     window.t = window.i18n.t;
 })();

@@ -216,7 +216,7 @@ function OCRDashboardView({ user, onBack }) {
     };
 
     return (
-        <div className="ocr-dashboard">
+        <div className="ocr-dashboard" style={{ paddingTop: '5.5rem' }}>
             <div className="ocr-header">
                 <button onClick={onBack} className="btn-secondary">← {window.t('ocr_btn_back_short')}</button>
                 <div style={{ textAlign: 'center' }}>

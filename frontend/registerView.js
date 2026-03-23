@@ -42,11 +42,11 @@ function RegisterView({ onRegister, onSwitch, onBack }) {
                     <input type="text" placeholder={window.t('register_placeholder_name')} value={name} onChange={e => setName(e.target.value)} required />
                     <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
                     <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
-                    <button type="submit">{window.t('register_btn_submit')}</button>
+                    <button type="submit" className="aeon-btn-primary" style={{ width: '100%' }}>{window.t('register_btn_submit')}</button>
                 </form>
                 <p>{window.t('register_footer_has_account')} <button onClick={onSwitch}>{window.t('register_btn_switch_login')}</button></p>
                 <div style={{ marginTop: '1rem', borderTop: '1px solid #eee', paddingTop: '1rem' }}>
-                    <button onClick={onBack} className="btn-secondary" style={{ width: '100%' }}>← {window.t('login_btn_back')}</button>
+                    <button onClick={onBack} className="aeon-btn-secondary" style={{ width: '100%' }}>← {window.t('login_btn_back')}</button>
                 </div>
             </div>
         </div>
