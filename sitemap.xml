@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <!-- Versión en Español (Por defecto) -->
+  <url>
+    <loc>https://saas-ocr.web.app/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://saas-ocr.web.app/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://saas-ocr.web.app/?lang=en"/>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <!-- Versión en Inglés -->
+  <url>
+    <loc>https://saas-ocr.web.app/?lang=en</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://saas-ocr.web.app/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://saas-ocr.web.app/?lang=en"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>
