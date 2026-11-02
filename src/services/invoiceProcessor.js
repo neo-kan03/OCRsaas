@@ -20,18 +20,18 @@ const InvoiceProcessor = {
         };
     },
 
-    // URLs de n8n
-    N8N_URL: "https://n8n.neo-n8n.com/webhook/google-doc-ai",
-    N8N_LOCAL: "http://localhost:5678/webhook-test/google-doc-ai",
+    // Webhook de n8n que hace el OCR. Se configura con VITE_OCR_WEBHOOK_URL (ver .env.example).
+    OCR_WEBHOOK_URL: import.meta.env.VITE_OCR_WEBHOOK_URL || "https://n8n.neo-n8n.com/webhook/ocr-vision",
 
     async processDocument(blob, name, searchList) {
-        const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
-        const targetWebhook = isLocal ? this.N8N_LOCAL : this.N8N_URL;
+        const targetWebhook = this.OCR_WEBHOOK_URL;
 
         const formData = new FormData();
         formData.append('file', blob, name);
-        
-        // Formato que espera el n8n del usuario: listado de strings '"clave":"valor"'
+
+        // Lista de campos como JSON: [{ clave, valor }]
+        formData.append('campos', JSON.stringify(searchList.map(({ clave, valor }) => ({ clave, valor }))));
+        // Formato antiguo ('"clave":"valor"' separados por comas), por compatibilidad con flujos anteriores
         const searchStrings = searchList.map(item => `"${item.clave}":"${item.valor}"`);
         formData.append('listaContenidoBuscar', searchStrings);
 
