@@ -16,6 +16,10 @@ export default function OCRDashboardView({ user, onBack }) {
     const [newClave, setNewClave] = React.useState("");
     const [newValor, setNewValor] = React.useState("");
     const [userPresets, setUserPresets] = React.useState({});
+    // Correcciones del usuario en el panel de revisión: { [índiceDelResultado]: { clave: valor } }
+    const [edits, setEdits] = React.useState({});
+    // Último campo del formulario que tuvo el foco, para rellenarlo al hacer clic en una caja del OCR
+    const activeFieldRef = React.useRef(null);
 
     const imgRef = React.useRef(null);
     const overlayRef = React.useRef(null);
@@ -39,6 +43,20 @@ export default function OCRDashboardView({ user, onBack }) {
             return () => clearInterval(timer);
         }
     }, [status]);
+
+    const setFieldValue = (index, clave, value) => {
+        setEdits(prev => ({
+            ...prev,
+            [index]: { ...(prev[index] || {}), [clave]: value }
+        }));
+    };
+
+    const getFieldValue = (index, clave) => {
+        const edited = edits[index] && edits[index][clave];
+        if (edited !== undefined) return edited;
+        const value = InvoiceProcessor.getOcrValue(results[index] && results[index].data, clave);
+        return value === null || value === undefined ? "" : String(value);
+    };
 
     const updateOverlays = () => {
         if (!imgRef.current || !overlayRef.current || !results[currentIndex]) return;
@@ -76,12 +94,12 @@ export default function OCRDashboardView({ user, onBack }) {
                 e.dataTransfer.setData("text/plain", f.value);
             };
 
+            // Evita que el input pierda el foco al pulsar la caja
+            div.onmousedown = (e) => e.preventDefault();
             div.onclick = () => {
-                const focused = document.activeElement;
-                if (focused && (focused.tagName === 'INPUT' || focused.tagName === 'TEXTAREA')) {
-                    focused.value = f.value;
-                    const event = new Event('input', { bubbles: true });
-                    focused.dispatchEvent(event);
+                const active = activeFieldRef.current;
+                if (active && active.index === currentIndex) {
+                    setFieldValue(active.index, active.clave, f.value);
                 }
             };
             container.appendChild(div);
@@ -231,6 +249,8 @@ export default function OCRDashboardView({ user, onBack }) {
 
         if (newResults.length > 0) {
             setResults(newResults);
+            setEdits({});
+            activeFieldRef.current = null;
             setCurrentIndex(0);
             setStatus("done");
         } else {
@@ -276,20 +296,11 @@ export default function OCRDashboardView({ user, onBack }) {
                                 <span className="material-symbols-outlined" style={{ fontSize: '1rem' }}>expand_more</span>
                             </button>
                             <div className="aeon-export-menu">
-                                <button className="aeon-export-item" onClick={() => InvoiceProcessor.exportToCSV(results)}>
+                                <button className="aeon-export-item" onClick={() => InvoiceProcessor.exportToCSV(results, edits)}>
                                     <span className="material-symbols-outlined">grid_on</span>
                                     <span>{t('ocr_btn_export_csv')}</span>
                                 </button>
-                                <button className="aeon-export-item" onClick={() => {
-                                    // Basic JSON export for demo
-                                    const jsonString = JSON.stringify(results.map(r => r.data), null, 2);
-                                    const blob = new Blob([jsonString], { type: 'application/json' });
-                                    const url = URL.createObjectURL(blob);
-                                    const a = document.createElement('a');
-                                    a.href = url;
-                                    a.download = `extraction_${new Date().getTime()}.json`;
-                                    a.click();
-                                }}>
+                                <button className="aeon-export-item" onClick={() => InvoiceProcessor.exportToJSON(results, edits)}>
                                     <span className="material-symbols-outlined">data_object</span>
                                     <span>{t('ocr_btn_export_json')}</span>
                                 </button>
@@ -540,24 +551,21 @@ export default function OCRDashboardView({ user, onBack }) {
 
                         <div className="aeon-ocr-form" key={currentIndex}>
                             {searchList.map(field => {
-                                const doc = results[currentIndex].data;
-                                const val = (doc.buscarCampos && doc.buscarCampos[0] && doc.buscarCampos[0][field.clave] !== undefined)
-                                    ? doc.buscarCampos[0][field.clave]
-                                    : (doc.mapped && doc.mapped[field.clave] !== undefined ? doc.mapped[field.clave] : "");
-
                                 return (
                                     <div key={field.clave} className="aeon-ocr-form-group">
                                         <label className="aeon-ocr-label">{field.clave.replace(/_/g, ' ')}</label>
                                         <input
                                             type="text"
                                             className="aeon-ocr-input"
-                                            defaultValue={val}
+                                            value={getFieldValue(currentIndex, field.clave)}
+                                            onChange={e => setFieldValue(currentIndex, field.clave, e.target.value)}
+                                            onFocus={() => { activeFieldRef.current = { index: currentIndex, clave: field.clave }; }}
                                             onDragOver={e => { e.preventDefault(); e.target.classList.add('drag-over'); }}
                                             onDragLeave={e => e.target.classList.remove('drag-over')}
                                             onDrop={e => {
                                                 e.preventDefault();
                                                 e.target.classList.remove('drag-over');
-                                                e.target.value = e.dataTransfer.getData("text/plain");
+                                                setFieldValue(currentIndex, field.clave, e.dataTransfer.getData("text/plain"));
                                             }}
                                         />
                                     </div>
