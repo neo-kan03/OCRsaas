@@ -1,0 +1,139 @@
+{
+  "name": "OCRsaas - OCR con Gemini",
+  "nodes": [
+    {
+      "id": "e43b862b-f0cf-4e65-a648-a61f4c57a10e",
+      "name": "Webhook OCR",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "900ab9c7-2a41-4042-919a-203198bca3cc",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ocr-vision",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      }
+    },
+    {
+      "id": "325f9653-9ceb-4a65-b5e0-bd76f7b6e124",
+      "name": "Preparar petición",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        0
+      ],
+      "parameters": {
+        "jsCode": "// Modelo de Gemini. Cámbialo aquí si quieres otro (p. ej. 'gemini-2.5-flash-lite', más barato).\nconst MODEL = 'gemini-2.5-flash';\n\nconst item = $input.first();\nconst body = item.json.body || {};\nconst binary = item.binary || {};\nconst key = Object.keys(binary)[0];\nif (!key) throw new Error('No ha llegado ningún archivo (campo \"file\").');\n\nconst buffer = await this.helpers.getBinaryDataBuffer(0, key);\nconst mimeType = binary[key].mimeType || 'image/png';\n\n// Campos a buscar: [{ clave, valor }]. Acepta el formato nuevo (\"campos\", JSON)\n// y el antiguo (\"listaContenidoBuscar\": '\"clave\":\"desc\",\"clave2\":\"desc2\"').\nlet campos = [];\nif (body.campos) {\n  campos = typeof body.campos === 'string' ? JSON.parse(body.campos) : body.campos;\n} else if (body.listaContenidoBuscar) {\n  const raw = Array.isArray(body.listaContenidoBuscar) ? body.listaContenidoBuscar.join(',') : String(body.listaContenidoBuscar);\n  campos = Object.entries(JSON.parse('{' + raw + '}')).map(([clave, valor]) => ({ clave, valor }));\n}\ncampos = (Array.isArray(campos) ? campos : []).filter(c => c && c.clave);\nif (!campos.length) throw new Error('No ha llegado ningún campo a buscar.');\n\nconst prompt = [\n  'Eres un sistema de OCR. Lee el documento de la imagen.',\n  '1. En \"campos\", devuelve una entrada por cada clave de la lista de abajo, con el valor tal y como aparece escrito en el documento y la caja donde aparece. Si el dato no está en el documento, valor = \"\" y sin caja. No inventes ni calcules valores.',\n  '2. En \"bloques\", devuelve todos los bloques de texto del documento (líneas o párrafos cortos) en orden de lectura, cada uno con su texto exacto y su caja. Separa en bloques distintos los textos que estén en celdas o columnas distintas.',\n  'Las cajas van en box_2d = [ymin, xmin, ymax, xmax], normalizadas de 0 a 1000 respecto a la imagen.',\n  '',\n  'Campos a buscar (clave: descripción):',\n  ...campos.map(c => `- ${c.clave}: ${c.valor || ''}`),\n].join('\\n');\n\nconst box = { type: 'ARRAY', items: { type: 'INTEGER' } };\nconst peticion = {\n  contents: [{\n    role: 'user',\n    parts: [\n      { inline_data: { mime_type: mimeType, data: buffer.toString('base64') } },\n      { text: prompt },\n    ],\n  }],\n  generationConfig: {\n    temperature: 0,\n    responseMimeType: 'application/json',\n    responseSchema: {\n      type: 'OBJECT',\n      properties: {\n        campos: {\n          type: 'ARRAY',\n          items: {\n            type: 'OBJECT',\n            properties: { clave: { type: 'STRING' }, valor: { type: 'STRING' }, box_2d: box },\n            required: ['clave', 'valor'],\n          },\n        },\n        bloques: {\n          type: 'ARRAY',\n          items: {\n            type: 'OBJECT',\n            properties: { texto: { type: 'STRING' }, box_2d: box },\n            required: ['texto', 'box_2d'],\n          },\n        },\n      },\n      required: ['campos', 'bloques'],\n    },\n    // Sin \"razonamiento\": más rápido y más barato. Quítalo si cambias a un modelo que no lo admita.\n    thinkingConfig: { thinkingBudget: 0 },\n  },\n};\n\nreturn [{ json: { model: MODEL, campos, peticion } }];\n"
+      }
+    },
+    {
+      "id": "3b995efa-d42e-4843-97f6-043657ff7eac",
+      "name": "Gemini",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        480,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/v1beta/models/{{ $json.model }}:generateContent",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googlePalmApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.peticion) }}",
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 2000
+    },
+    {
+      "id": "41d04195-39d0-41dc-81d7-54b610c5ff36",
+      "name": "Formato Document AI",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        0
+      ],
+      "parameters": {
+        "jsCode": "// Convierte la respuesta de Gemini al formato que ya usa el frontend (el de Document AI):\n// { buscarCampos: [{ clave: valor }], pages: [{ blocks: [{ type, text, boundingPoly }] }] }\nconst prep = $('Preparar petición').first().json;\nconst res = $input.first().json;\n\nconst text = (res?.candidates?.[0]?.content?.parts || []).map(p => p.text || '').join('');\nlet parsed;\ntry {\n  parsed = JSON.parse(text);\n} catch (e) {\n  const motivo = res?.candidates?.[0]?.finishReason || res?.promptFeedback?.blockReason || 'desconocido';\n  throw new Error(`Gemini no devolvió JSON válido (motivo: ${motivo}): ${text.slice(0, 300)}`);\n}\n\nconst toPoly = (b) => {\n  if (!Array.isArray(b) || b.length !== 4) return null;\n  const [ymin, xmin, ymax, xmax] = b.map(n => Math.min(1000, Math.max(0, Number(n) || 0)) / 1000);\n  if (xmax <= xmin || ymax <= ymin) return null;\n  return {\n    normalizedVertices: [\n      { x: xmin, y: ymin }, { x: xmax, y: ymin },\n      { x: xmax, y: ymax }, { x: xmin, y: ymax },\n    ],\n  };\n};\n\nconst valores = {};\nprep.campos.forEach(c => { valores[c.clave] = ''; });\n\nconst blocks = [];\nconst textos = new Set();\n(parsed.bloques || []).forEach(b => {\n  const t = String(b?.texto ?? '').trim();\n  const poly = toPoly(b?.box_2d);\n  if (!t || !poly) return;\n  blocks.push({ type: 'PARAGRAPH', text: t, boundingPoly: poly });\n  textos.add(t);\n});\n\n(parsed.campos || []).forEach(c => {\n  if (!c || !Object.prototype.hasOwnProperty.call(valores, c.clave)) return;\n  const v = String(c.valor ?? '').trim();\n  valores[c.clave] = v;\n  // Que cada valor encontrado tenga su caja en el panel aunque no venga entre los bloques\n  const poly = toPoly(c.box_2d);\n  if (v && poly && !textos.has(v)) {\n    blocks.push({ type: 'PARAGRAPH', text: v, boundingPoly: poly });\n    textos.add(v);\n  }\n});\n\nreturn [{\n  json: {\n    buscarCampos: [valores],\n    pages: [{ blocks }],\n    modelo: prep.model,\n    uso: res.usageMetadata || null,\n  },\n}];\n"
+      }
+    },
+    {
+      "id": "0dd11640-3f5e-476b-a2b3-eeed020e09ae",
+      "name": "Responder",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        960,
+        0
+      ],
+      "parameters": {
+        "respondWith": "firstIncomingItem",
+        "options": {}
+      }
+    }
+  ],
+  "connections": {
+    "Webhook OCR": {
+      "main": [
+        [
+          {
+            "node": "Preparar petición",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar petición": {
+      "main": [
+        [
+          {
+            "node": "Gemini",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini": {
+      "main": [
+        [
+          {
+            "node": "Formato Document AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formato Document AI": {
+      "main": [
+        [
+          {
+            "node": "Responder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {}
+}
