@@ -41,7 +41,12 @@ const InvoiceProcessor = {
         });
 
         if (!response.ok) {
-            throw new Error(`Error del servidor (${response.status}) en n8n`);
+            let detalle = "";
+            try {
+                const err = await response.json();
+                detalle = [err.nodo, err.error, err.detalle].filter(Boolean).join(" · ");
+            } catch (e) { /* respuesta sin JSON */ }
+            throw new Error(`Error del servidor (${response.status}) en n8n${detalle ? ": " + detalle : ""}`);
         }
 
         const data = await response.json();
