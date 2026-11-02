@@ -624,4 +624,3 @@ window.i18n = i18n;
 window.t = t;
 
 export default i18n;
-活跃
